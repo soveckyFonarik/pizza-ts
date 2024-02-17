@@ -4,13 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const rootElemetn: HTMLElement | null = document.getElementById('root');
+if (rootElemetn !== null) {
+  const root = ReactDOM.createRoot(rootElemetn);
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
