@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface PizzaBlockProps {
   //   id: string;
@@ -11,6 +11,12 @@ interface PizzaBlockProps {
 }
 
 export const PizzaBlock: React.FC<PizzaBlockProps> = ({ price }) => {
+  const [pizzaCount, setPizzaSount] = useState(0);
+
+  const onClickAddCountButton = (): void => {
+    setPizzaSount(pizzaCount + 1);
+  };
+
   return (
     <div className="pizza-block">
       <img
@@ -32,7 +38,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({ price }) => {
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">{price}</div>
-        <div className="button button--outline button--add">
+        <button onClick={onClickAddCountButton} className="button button--outline button--add">
           <svg
             width="12"
             height="12"
@@ -45,8 +51,8 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({ price }) => {
             />
           </svg>
           <span>Добавить</span>
-          <i>2</i>
-        </div>
+          <i>{pizzaCount}</i>
+        </button>
       </div>
     </div>
   );
