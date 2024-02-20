@@ -1,44 +1,61 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface PizzaBlockProps {
-  //   id: string;
-  //   title: string;
+  id: string;
+  title: string;
   price: number;
-  //   imageUrl: string;
-  //   size: number[];
-  //   types: number[];
-  //   rating: number;
+  imageUrl: string;
+  sizes: number[];
+  types: number[];
+  // rating: number;
 }
 
-export const PizzaBlock: React.FC<PizzaBlockProps> = ({ price }) => {
-  const [pizzaCount, setPizzaSount] = useState(0);
-
-  const onClickAddCountButton = (): void => {
-    setPizzaSount(pizzaCount + 1);
-  };
-
+export const PizzaBlock: React.FC<PizzaBlockProps> = ({
+  id,
+  title,
+  price,
+  imageUrl,
+  sizes,
+  types
+  // FIXME: потом добавим эти свойства.
+  // rating
+}) => {
+  const typesNames: string[] = ['тонкое', 'традиционное'];
+  const [activeType, setActiveType] = React.useState(0);
+  const [SizeType, setSizeType] = React.useState(0);
   return (
-    <div className="pizza-block">
-      <img
-        className="pizza-block__image"
-        src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
-        alt="Pizza"
-      />
-      <h4 className="pizza-block__title">Чизбургер-пицца</h4>
+    <div className="pizza-block" key={id}>
+      <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+      <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
-          <li className="active">тонкое</li>
-          <li>традиционное</li>
+          {types.map((item: number, key: number) => (
+            <li
+              onClick={() => {
+                setActiveType(item);
+              }}
+              key={key}
+              className={activeType === item ? 'active' : ''}>
+              {typesNames[item]} см.
+            </li>
+          ))}
         </ul>
         <ul>
-          <li className="active">26 см.</li>
-          <li>30 см.</li>
-          <li>40 см.</li>
+          {sizes.map((item: number, key: number) => (
+            <li
+              onClick={() => {
+                setSizeType(key);
+              }}
+              key={key}
+              className={SizeType === key ? 'active' : ''}>
+              {item} см.
+            </li>
+          ))}
         </ul>
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">{price}</div>
-        <button onClick={onClickAddCountButton} className="button button--outline button--add">
+        <button className="button button--outline button--add">
           <svg
             width="12"
             height="12"
@@ -51,7 +68,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({ price }) => {
             />
           </svg>
           <span>Добавить</span>
-          <i>{pizzaCount}</i>
+          <i>{0}</i>
         </button>
       </div>
     </div>

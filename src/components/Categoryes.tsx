@@ -1,15 +1,21 @@
 import React from 'react';
 
 export const Categoryes: React.FC = () => {
+  const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
+  const [indexCategory, setActiveIndex] = React.useState(0);
   return (
     <div className="categories">
       <ul>
-        <li className="active">Все</li>
-        <li>Мясные</li>
-        <li>Вегетарианская</li>
-        <li>Гриль</li>
-        <li>Острые</li>
-        <li>Закрытые</li>
+        {categories.map((category: string, key: number) => (
+          <li
+            key={key}
+            onClick={() => {
+              setActiveIndex(key);
+            }}
+            className={indexCategory === key ? 'active' : ''}>
+            {category}
+          </li>
+        ))}
       </ul>
     </div>
   );
