@@ -12,6 +12,7 @@ export const Home = (): React.ReactElement => {
         setIsLoading(false);
       })
       .catch(() => {});
+    window.scrollTo(0, 0);
   }, []);
 
   return (
