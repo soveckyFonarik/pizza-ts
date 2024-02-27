@@ -1,10 +1,20 @@
 import React from 'react';
-
-export const Sort: React.FC = () => {
+import { type SortItem } from '../@types/types';
+interface SortProps {
+  value: SortItem;
+  onChangeSort: (idx: SortItem) => void;
+}
+export const Sort: React.FC<SortProps> = ({ value, onChangeSort }) => {
   const [isVisiblePopup, setIsVisible] = React.useState(false);
-  const Sortlist: string[] = ['популярности', 'цене', 'алфавиту'];
-  const [activeSortItem, setActiveSortItem] = React.useState(0);
-  const selectedNameSort = Sortlist[activeSortItem];
+
+  const Sortlist: SortItem[] = [
+    { name: 'популярности (DESC)', sortProperty: 'raiting' },
+    { name: 'популярности (ASC)', sortProperty: '-raiting' },
+    { name: 'цене (DESC)', sortProperty: 'price' },
+    { name: 'цене (ASC)', sortProperty: '-price' },
+    { name: 'алфавиту (DESC)', sortProperty: 'title' },
+    { name: 'алфавиту (ASC)', sortProperty: '-title' }
+  ];
   return (
     <div className="sort">
       <div className="sort__label">
@@ -24,21 +34,21 @@ export const Sort: React.FC = () => {
           onClick={() => {
             setIsVisible(!isVisiblePopup);
           }}>
-          {selectedNameSort}
+          {value.name}
         </span>
       </div>
       {isVisiblePopup && (
         <div className="sort__popup">
           <ul>
-            {Sortlist.map((nameSortItem: string, index: number) => (
+            {Sortlist.map((SortItem: SortItem, index: number) => (
               <li
                 onClick={() => {
-                  setActiveSortItem(index);
+                  onChangeSort(SortItem);
                   setIsVisible(!isVisiblePopup);
                 }}
                 key={index}
-                className={selectedNameSort === nameSortItem ? 'active' : ''}>
-                {nameSortItem}
+                className={value.name === SortItem.name ? 'active' : ''}>
+                {SortItem.name}
               </li>
             ))}
           </ul>
