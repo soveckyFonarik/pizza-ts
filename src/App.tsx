@@ -6,13 +6,17 @@ import { Route, Routes } from 'react-router-dom';
 // import pizass from './assets/pizzas.json';
 
 function App(): React.ReactElement {
+  const [searchValue, setSearchValue] = React.useState('');
   return (
     <div className="wrapper">
-      <Header />
+      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
       <div className="content">
         <div className="container">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route
+              path="/"
+              element={<Home searchValue={searchValue} setSearchValue={setSearchValue} />}
+            />
             <Route path="/cart" element={<Cart />} />
             <Route path="*" element={<NotFoud />} />
           </Routes>
