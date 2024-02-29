@@ -1,8 +1,10 @@
 import React from 'react';
 import styles from './Search.module.scss';
 import { type SearchProps } from '../../@types/types';
+import { SearchContext } from '../../App';
 
-export const Search: React.FC<SearchProps> = ({ searchValue, setSearchValue }) => {
+export const Search: React.FC = () => {
+  const { searchValue, setSearchValue }: SearchProps = React.useContext(SearchContext);
   return (
     <div className={styles.root}>
       <svg

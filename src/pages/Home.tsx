@@ -2,13 +2,12 @@ import React from 'react';
 
 import { Sort, Categoryes, PizzaBlock, Skeleton, Pagination } from '../components';
 import { type SearchProps, type SortItem } from '../@types/types';
-export const Home: React.FC<SearchProps> = ({
-  searchValue,
-  setSearchValue
-}): React.ReactElement => {
+import { SearchContext } from '../App';
+export const Home: React.FC = (): React.ReactElement => {
+  const { searchValue }: SearchProps = React.useContext(SearchContext);
   const [items, setItems] = React.useState<any[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [currentPage, onChangePage] = React.useState(0);
+  const [currentPage, onChangePage] = React.useState(1);
   const [activeSortItem, setActiveSortItem] = React.useState<SortItem>({
     name: 'популярности',
     sortProperty: 'raiting'
