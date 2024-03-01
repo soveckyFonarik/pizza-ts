@@ -1,26 +1,32 @@
 import React from 'react';
 
 import { Sort, Categoryes, PizzaBlock, Skeleton, Pagination } from '../components';
-import { type SearchProps, type SortItem } from '../@types/types';
-import { SearchContext } from '../App';
-export const Home: React.FC = (): React.ReactElement => {
-  const { searchValue }: SearchProps = React.useContext(SearchContext);
-  const [items, setItems] = React.useState<any[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [currentPage, onChangePage] = React.useState(1);
-  const [activeSortItem, setActiveSortItem] = React.useState<SortItem>({
-    name: 'популярности',
-    sortProperty: 'raiting'
-  });
-  const [indexCategory, setActiveCategoryIndex] = React.useState(0);
+import { useAppDispatch, useAppSelector } from '../redux';
+import { changeIsLoading, setPizzas } from '../redux/slices/PizzaSlice';
+import { type Pizza } from '../@types/Pizzas';
 
+export const Home: React.FC = (): React.ReactElement => {
+  const dispatch = useAppDispatch();
+
+  const { activeSortItem, indexCategory, searchValue, currentPage } = useAppSelector(
+    (state) => state.filter
+  );
+  const setIsLoading = (value: boolean): void => {
+    dispatch(changeIsLoading(value));
+  };
+  const setItems = (value: Pizza[]): void => {
+    dispatch(setPizzas(value));
+  };
+  const { pizzas, isLoading } = useAppSelector((state) => state.pizzas);
+  // eslint check fix
+  if (activeSortItem.sortProperty === undefined) {
+    activeSortItem.sortProperty = '';
+  }
   const orderBy = activeSortItem.sortProperty.includes('-') ? 'asc' : 'desc';
   const sortBy = activeSortItem.sortProperty.replace('-', '');
   const searchBy = searchValue !== '' ? `&search=${searchValue}` : '';
   const cotegoryBy = indexCategory > 0 ? `category=${indexCategory}` : '';
-  const pizzas = items
-    // .filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase()))
-    .map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
+  const pizzasBlock = pizzas.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
   React.useEffect(() => {
     setIsLoading(true);
@@ -28,7 +34,7 @@ export const Home: React.FC = (): React.ReactElement => {
       `https://65d61378f6967ba8e3bd739e.mockapi.io/pizzas?page=${currentPage}&limit=4&${cotegoryBy}&sortBy=${sortBy}&order=${orderBy}${searchBy}`
     )
       .then(async (res) => await res.json())
-      .then((json: any[]) => {
+      .then((json: Pizza[]) => {
         setItems(json);
         setIsLoading(false);
       })
@@ -40,22 +46,12 @@ export const Home: React.FC = (): React.ReactElement => {
     <>
       {' '}
       <div className="content__top">
-        <Categoryes
-          value={indexCategory}
-          onChangeCategory={(i: number): void => {
-            setActiveCategoryIndex(i);
-          }}
-        />
-        <Sort
-          value={activeSortItem}
-          onChangeSort={(value: SortItem): void => {
-            setActiveSortItem(value);
-          }}
-        />
+        <Categoryes />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? skeletons : pizzas}</div>
-      <Pagination currentPage={currentPage} onChangePage={onChangePage} />
+      <div className="content__items">{isLoading ? skeletons : pizzasBlock}</div>
+      <Pagination />
     </>
   );
 };

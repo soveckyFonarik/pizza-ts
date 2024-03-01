@@ -1,14 +1,5 @@
 import React from 'react';
-
-interface PizzaBlockProps {
-  id: string;
-  title: string;
-  price: number;
-  imageUrl: string;
-  sizes: number[];
-  types: number[];
-  // rating: number;
-}
+import { type PizzaBlockProps } from '../../@types/Pizzas';
 
 export const PizzaBlock: React.FC<PizzaBlockProps> = ({
   id,

@@ -1,9 +1,13 @@
 import React from 'react';
-interface CategoriesProps {
-  value: number;
-  onChangeCategory: (idx: number) => void;
-}
-export const Categoryes: React.FC<CategoriesProps> = ({ value, onChangeCategory }) => {
+import { useAppDispatch, useAppSelector } from '../redux';
+import { setCategoryId } from '../redux/slices/FilterSlice';
+
+export const Categoryes: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const onChangeCategory = (i: number): void => {
+    dispatch(setCategoryId(i));
+  };
+  const { indexCategory } = useAppSelector((state) => state.filter);
   const categoriesNames = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
   return (
     <div className="categories">
@@ -14,7 +18,7 @@ export const Categoryes: React.FC<CategoriesProps> = ({ value, onChangeCategory 
             onClick={() => {
               onChangeCategory(key);
             }}
-            className={value === key ? 'active' : ''}>
+            className={indexCategory === key ? 'active' : ''}>
             {category}
           </li>
         ))}

@@ -1,10 +1,11 @@
 import React from 'react';
 import styles from './Search.module.scss';
-import { type SearchProps } from '../../@types/types';
-import { SearchContext } from '../../App';
+import { useAppDispatch, useAppSelector } from '../../redux';
+import { setSearchValue } from '../../redux/slices/FilterSlice';
 
 export const Search: React.FC = () => {
-  const { searchValue, setSearchValue }: SearchProps = React.useContext(SearchContext);
+  const { searchValue } = useAppSelector((state) => state.filter);
+  const dispatch = useAppDispatch();
   return (
     <div className={styles.root}>
       <svg
@@ -43,7 +44,7 @@ export const Search: React.FC = () => {
       <input
         value={searchValue}
         onChange={(event) => {
-          setSearchValue(event.target.value);
+          dispatch(setSearchValue(event.target.value));
         }}
         className={styles.input}
         placeholder="Поиск пиццы..."
@@ -51,7 +52,7 @@ export const Search: React.FC = () => {
       {searchValue !== '' && (
         <svg
           onClick={() => {
-            setSearchValue('');
+            dispatch(setSearchValue(''));
           }}
           className={styles.clearIcon}
           viewBox="0 0 20 20"

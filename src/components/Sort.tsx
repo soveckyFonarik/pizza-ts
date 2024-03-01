@@ -1,10 +1,11 @@
 import React from 'react';
 import { type SortItem } from '../@types/types';
-interface SortProps {
-  value: SortItem;
-  onChangeSort: (idx: SortItem) => void;
-}
-export const Sort: React.FC<SortProps> = ({ value, onChangeSort }) => {
+import { useAppDispatch, useAppSelector } from '../redux';
+import { setSortProperty } from '../redux/slices/FilterSlice';
+
+export const Sort: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { activeSortItem } = useAppSelector((state) => state.filter);
   const [isVisiblePopup, setIsVisible] = React.useState(false);
 
   const Sortlist: SortItem[] = [
@@ -34,7 +35,7 @@ export const Sort: React.FC<SortProps> = ({ value, onChangeSort }) => {
           onClick={() => {
             setIsVisible(!isVisiblePopup);
           }}>
-          {value.name}
+          {activeSortItem.name}
         </span>
       </div>
       {isVisiblePopup && (
@@ -43,11 +44,11 @@ export const Sort: React.FC<SortProps> = ({ value, onChangeSort }) => {
             {Sortlist.map((SortItem: SortItem, index: number) => (
               <li
                 onClick={() => {
-                  onChangeSort(SortItem);
+                  dispatch(setSortProperty(SortItem));
                   setIsVisible(!isVisiblePopup);
                 }}
                 key={index}
-                className={value.name === SortItem.name ? 'active' : ''}>
+                className={activeSortItem.name === SortItem.name ? 'active' : ''}>
                 {SortItem.name}
               </li>
             ))}
