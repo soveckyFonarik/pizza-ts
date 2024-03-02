@@ -11,6 +11,8 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "axios": "^1.6.7",
+    "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
     "react-content-loader": "^6.2.1",
     "react-dom": "^18.2.0",
@@ -48,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
     "@types/react-redux": "^7.1.33",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "eslint": "^8.56.0",

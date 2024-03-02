@@ -1,5 +1,5 @@
 import React from 'react';
-
+import axios from 'axios';
 import { Sort, Categoryes, PizzaBlock, Skeleton, Pagination } from '../components';
 import { useAppDispatch, useAppSelector } from '../redux';
 import { changeIsLoading, setPizzas } from '../redux/slices/PizzaSlice';
@@ -22,23 +22,28 @@ export const Home: React.FC = (): React.ReactElement => {
   if (activeSortItem.sortProperty === undefined) {
     activeSortItem.sortProperty = '';
   }
-  const orderBy = activeSortItem.sortProperty.includes('-') ? 'asc' : 'desc';
-  const sortBy = activeSortItem.sortProperty.replace('-', '');
-  const searchBy = searchValue !== '' ? `&search=${searchValue}` : '';
-  const cotegoryBy = indexCategory > 0 ? `category=${indexCategory}` : '';
   const pizzasBlock = pizzas.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
+
   React.useEffect(() => {
+    const orderBy = activeSortItem.sortProperty.includes('-') ? 'asc' : 'desc';
+    const sortBy = activeSortItem.sortProperty.replace('-', '');
+    const searchBy = searchValue !== '' ? `&search=${searchValue}` : '';
+    const cotegoryBy = indexCategory > 0 ? `category=${indexCategory}` : '';
     setIsLoading(true);
-    fetch(
-      `https://65d61378f6967ba8e3bd739e.mockapi.io/pizzas?page=${currentPage}&limit=4&${cotegoryBy}&sortBy=${sortBy}&order=${orderBy}${searchBy}`
-    )
-      .then(async (res) => await res.json())
-      .then((json: Pizza[]) => {
-        setItems(json);
+
+    axios
+      .get<Pizza[]>(
+        `https://65d61378f6967ba8e3bd739e.mockapi.io/pizzas?page=${currentPage}&limit=4&${cotegoryBy}&sortBy=${sortBy}&order=${orderBy}${searchBy}`
+      )
+      .then((res) => {
+        setItems(res.data);
         setIsLoading(false);
       })
-      .catch(() => {});
+      .catch(() => {
+        setItems([]);
+        setIsLoading(true);
+      });
     window.scrollTo(0, 0);
   }, [indexCategory, activeSortItem, searchValue, currentPage]);
 
