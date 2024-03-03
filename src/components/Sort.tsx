@@ -1,21 +1,22 @@
 import React from 'react';
-import { type SortItem } from '../@types/types';
+import { type SortItem } from '../@types/Filters';
 import { useAppDispatch, useAppSelector } from '../redux';
 import { setSortProperty } from '../redux/slices/FilterSlice';
+
+export const Sortlist: SortItem[] = [
+  { name: 'популярности (DESC)', sortProperty: 'raiting' },
+  { name: 'популярности (ASC)', sortProperty: '-raiting' },
+  { name: 'цене (DESC)', sortProperty: 'price' },
+  { name: 'цене (ASC)', sortProperty: '-price' },
+  { name: 'алфавиту (DESC)', sortProperty: 'title' },
+  { name: 'алфавиту (ASC)', sortProperty: '-title' }
+];
 
 export const Sort: React.FC = () => {
   const dispatch = useAppDispatch();
   const { activeSortItem } = useAppSelector((state) => state.filter);
   const [isVisiblePopup, setIsVisible] = React.useState(false);
 
-  const Sortlist: SortItem[] = [
-    { name: 'популярности (DESC)', sortProperty: 'raiting' },
-    { name: 'популярности (ASC)', sortProperty: '-raiting' },
-    { name: 'цене (DESC)', sortProperty: 'price' },
-    { name: 'цене (ASC)', sortProperty: '-price' },
-    { name: 'алфавиту (DESC)', sortProperty: 'title' },
-    { name: 'алфавиту (ASC)', sortProperty: '-title' }
-  ];
   return (
     <div className="sort">
       <div className="sort__label">

@@ -23,3 +23,15 @@ export interface PaginationProps {
   currentPage: number;
   onChangePage: (page: number) => void;
 }
+
+export interface FilterSet {
+  activeSortItem: SortItem;
+  indexCategory: number;
+  currentPage: number;
+}
+
+export interface UrlFilterSet {
+  sortProperty: string;
+  indexCategory: number;
+  currentPage: number;
+}

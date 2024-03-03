@@ -8,12 +8,12 @@ const rootElemetn: HTMLElement | null = document.getElementById('root');
 if (rootElemetn !== null) {
   const root = ReactDOM.createRoot(rootElemetn);
   root.render(
-    <React.StrictMode>
-      <BrowserRouter>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </BrowserRouter>
-    </React.StrictMode>
+    // <React.StrictMode>
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
+    // </React.StrictMode>
   );
 }
