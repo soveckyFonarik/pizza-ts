@@ -2,6 +2,7 @@ import React from 'react';
 import { type SortItem } from '../@types/Filters';
 import { useAppDispatch, useAppSelector } from '../redux';
 import { setSortProperty } from '../redux/slices/FilterSlice';
+import { type PopupClick } from '../@types/Sort';
 
 export const Sortlist: SortItem[] = [
   { name: 'популярности (DESC)', sortProperty: 'raiting' },
@@ -13,12 +14,32 @@ export const Sortlist: SortItem[] = [
 ];
 
 export const Sort: React.FC = () => {
+  const sortRef = React.useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const { activeSortItem } = useAppSelector((state) => state.filter);
   const [isVisiblePopup, setIsVisible] = React.useState(false);
 
+  // TODO: почитать про useEffect
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent): void => {
+      const _event = event as PopupClick;
+      if (sortRef.current === null) {
+        return;
+      }
+      const isIncludes: boolean = _event.composedPath().includes(sortRef.current);
+      if (!isIncludes) {
+        setIsVisible(false);
+      }
+    };
+    document.body.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
