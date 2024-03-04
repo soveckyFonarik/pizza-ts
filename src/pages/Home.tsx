@@ -38,12 +38,12 @@ export const Home: React.FC = (): React.ReactElement => {
   React.useEffect(() => {
     const UrlParams: string = window.location.search;
     if (UrlParams === '') {
-      isSearch.current = true;
+      // isSearch.current = true;
       return;
     }
 
     dispatch(setFilters(UrlParams));
-    isSearch.current = true;
+    // isSearch.current = true;
   }, []);
 
   /**

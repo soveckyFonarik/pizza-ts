@@ -1,5 +1,8 @@
 import React from 'react';
 import { type PizzaBlockProps } from '../../@types/Pizzas';
+import { useAppDispatch, useAppSelector } from '../../redux';
+import { type PizzaCart } from '../../@types/PizzaCart';
+import { addItem } from '../../redux/slices/CartSlice';
 
 export const PizzaBlock: React.FC<PizzaBlockProps> = ({
   id,
@@ -11,6 +14,22 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
   // FIXME: потом добавим эти свойства.
   // rating
 }) => {
+  const dispatch = useAppDispatch();
+  const onClickAdd = (): void => {
+    const Pizza: PizzaCart = {
+      id: Number(id),
+      name: title,
+      price,
+      imageUrl,
+      type: typesNames[activeType],
+      size: sizes[SizeType],
+      count: 1
+    };
+    dispatch(addItem(Pizza));
+  };
+  const countItem = useAppSelector((state) =>
+    state.cart.items.reduce((partialSum, a) => partialSum + a.count, 0)
+  );
   const typesNames: string[] = ['тонкое', 'традиционное'];
   const [activeType, setActiveType] = React.useState(0);
   const [SizeType, setSizeType] = React.useState(0);
@@ -47,7 +66,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
         </div>
         <div className="pizza-block__bottom">
           <div className="pizza-block__price">{price}</div>
-          <button className="button button--outline button--add">
+          <button onClick={onClickAdd} className="button button--outline button--add">
             <svg
               width="12"
               height="12"
@@ -60,7 +79,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
               />
             </svg>
             <span>Добавить</span>
-            <i>{0}</i>
+            {countItem > 0 && <i>{countItem}</i>}
           </button>
         </div>
       </div>
