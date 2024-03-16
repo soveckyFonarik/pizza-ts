@@ -27,9 +27,16 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
     };
     dispatch(addItem(Pizza));
   };
+
   const countItem = useAppSelector((state) =>
-    state.cart.items.reduce((partialSum, a) => partialSum + a.count, 0)
+    state.cart.items
+      .filter((item) => item.id === Number(id))
+      .reduce((partialSum, a) => partialSum + a.count, 0)
   );
+
+  // const countItem = useAppSelector((state) =>
+  //   state.cart.items.reduce((partialSum, a) => partialSum + a.count, 0)
+  // );
   const typesNames: string[] = ['тонкое', 'традиционное'];
   const [activeType, setActiveType] = React.useState(0);
   const [SizeType, setSizeType] = React.useState(0);

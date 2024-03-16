@@ -20,5 +20,13 @@ export interface PizzaBlockProps {
 
 export interface PizzaState {
   pizzas: Pizza[];
-  isLoading: boolean;
+  status: string;
+}
+
+export interface SearchPizzaParams {
+  sortBy: string;
+  order: string;
+  cotegoryBy: string;
+  search: string;
+  currentPage: string;
 }
